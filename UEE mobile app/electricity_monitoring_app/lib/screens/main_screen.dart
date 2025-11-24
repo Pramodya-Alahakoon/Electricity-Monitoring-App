@@ -1,8 +1,9 @@
+import 'package:electricity_monitoring_app/screens/dashboard/new_dashbaord_screen.dart';
 import 'package:flutter/material.dart';
-import 'appliance/appliance_list_screen.dart';
-import 'dashboard/dashboard_screen.dart';
-import 'settings/settings_screen.dart';
-import 'budget/budget_screen.dart';
+import 'settings/new_settings_screen.dart';
+import 'budget/new_budget_screen.dart';
+import 'leaderboard/leaderboard_screen.dart';
+import 'analysis/budget_analysis_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -14,12 +15,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // List of pages that will be displayed by the bottom navigation
+  // Old Screen
+  // final List<Widget> _pages = [
+  //   const DashboardScreen(),
+  //   const ApplianceListScreen(),
+  //   const BudgetScreen(),
+  //   const SettingsScreen(),
+  // ];
+
+  //New Screens
   final List<Widget> _pages = [
-    const DashboardScreen(),
-    const ApplianceListScreen(),
-    const BudgetScreen(),
-    const SettingsScreen(),
+    const NewDashboardScreen(),
+    const NewBudgetScreen(showBackButton: false),
+    const BudgetAnalysisScreen(showBackButton: false),
+    const LeaderboardScreen(),
+    const NewSettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -44,12 +54,16 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Dashboard',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.devices),
-            label: 'Appliances',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),
             label: 'Budget',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: 'Analysis',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.leaderboard),
+            label: 'Leaderboard',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

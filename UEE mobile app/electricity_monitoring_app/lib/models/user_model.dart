@@ -6,6 +6,7 @@ class UserModel {
   final String email;
   final DateTime createdAt;
   final NotificationPreferences notificationPreferences;
+  final int points;
 
   UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     required this.email,
     required this.createdAt,
     NotificationPreferences? notificationPreferences,
+    this.points = 0,
   }) : notificationPreferences =
            notificationPreferences ?? NotificationPreferences();
 
@@ -24,7 +26,7 @@ class UserModel {
     } else {
       userCreatedAt = DateTime.now();
     }
-    
+
     return UserModel(
       id: id,
       name: map['name'] ?? '',
@@ -33,6 +35,7 @@ class UserModel {
       notificationPreferences: map['notificationPreferences'] != null
           ? NotificationPreferences.fromMap(map['notificationPreferences'])
           : NotificationPreferences(),
+      points: map['points'] ?? 0,
     );
   }
 
@@ -42,6 +45,7 @@ class UserModel {
       'email': email,
       'createdAt': createdAt,
       'notificationPreferences': notificationPreferences.toMap(),
+      'points': points,
     };
   }
 }

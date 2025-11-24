@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:electricity_monitoring_app/services/auth_service.dart';
+import 'package:electricity_monitoring_app/services/meter_reading_reminder_service.dart';
 import 'package:electricity_monitoring_app/models/user_model.dart';
 import 'package:electricity_monitoring_app/widgets/custom_app_bar.dart';
 import 'package:electricity_monitoring_app/widgets/custom_button.dart';
@@ -19,6 +20,7 @@ class NotificationPreferencesScreen extends StatefulWidget {
 class _NotificationPreferencesScreenState
     extends State<NotificationPreferencesScreen> {
   bool _isLoading = true;
+  bool _meterReadingRemindersEnabled = true;
   NotificationPreferences _preferences = NotificationPreferences();
   final TextEditingController _dailyThresholdController =
       TextEditingController();
@@ -49,6 +51,10 @@ class _NotificationPreferencesScreenState
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
+      final meterReadingService = Provider.of<MeterReadingReminderService>(
+        context,
+        listen: false,
+      );
       final userDoc = await authService.getUserDoc();
 
       if (userDoc != null) {
@@ -76,6 +82,10 @@ class _NotificationPreferencesScreenState
           );
         }
       }
+
+      // Load meter reading reminder preference
+      _meterReadingRemindersEnabled = await meterReadingService
+          .areMeterReadingRemindersEnabled();
     } catch (e) {
       ScaffoldMessenger.of(
         context,
@@ -264,6 +274,53 @@ class _NotificationPreferencesScreenState
                       });
                     },
                   ),
+                  SizedBox(height: 20),
+
+                  _buildSectionTitle('Meter Reading Reminders'),
+                  _buildSwitchTile(
+                    'Weekly Meter Reading Reminders',
+                    _meterReadingRemindersEnabled,
+                    (value) async {
+                      setState(() {
+                        _meterReadingRemindersEnabled = value;
+                      });
+                      final meterReadingService =
+                          Provider.of<MeterReadingReminderService>(
+                            context,
+                            listen: false,
+                          );
+                      await meterReadingService.setMeterReadingRemindersEnabled(
+                        value,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            value
+                                ? 'Meter reading reminders enabled. You\'ll receive notifications on Mondays and Sundays.'
+                                : 'Meter reading reminders disabled.',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  if (_meterReadingRemindersEnabled)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: Text(
+                        '📅 You\'ll receive reminders on:\n'
+                        '• Mondays (start of week) at 8 AM\n'
+                        '• Sundays (end of week) at 8 AM',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+
                   SizedBox(height: 20),
 
                   _buildSectionTitle('Enhanced Notifications'),

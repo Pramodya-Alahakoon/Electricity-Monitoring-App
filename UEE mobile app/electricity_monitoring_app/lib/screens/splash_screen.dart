@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
             ScaleTransition(
               scale: _animation,
               child: Image.asset(
-                'assets/images/logo.png',
+                'assets/images/echowatt.png',
                 width: 150,
                 height: 150,
                 errorBuilder: (context, error, stackTrace) {
@@ -116,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen>
             const SizedBox(height: 20),
 
             Text(
-              'Saving Energy, Saving Money',
+              'Affordable Energy for Every Family',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white.withOpacity(0.8),
