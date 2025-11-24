@@ -22,7 +22,6 @@ This repository contains a Flutter-based mobile application designed to help use
 
 ```bash
 # Clone the repository
-git clone https://github.com/NIMADITH-LMH/Electricity-Monitoring-App.git
 
 # Navigate to the app directory
 cd Electricity-Monitoring-App/UEE\ mobile\ app/electricity_monitoring_app
